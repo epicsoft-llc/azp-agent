@@ -13,7 +13,7 @@ variables:
 before_script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker login -u="$DOCKER_HUB_USER" -p="$DOCKER_HUB_TOKEN"
-  #- docker buildx use epicbuilder > /dev/null 2>&1 || docker buildx create --name epicbuilder --use > /dev/null 2>&1
+  - docker buildx use epicbuilder > /dev/null 2>&1 || docker buildx create --name epicbuilder --use > /dev/null 2>&1
 
 after_script:
   - docker logout $CI_REGISTRY
