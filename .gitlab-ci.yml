@@ -13,8 +13,7 @@ variables:
 before_script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker login -u="$DOCKER_HUB_USER" -p="$DOCKER_HUB_TOKEN"
-  - docker buildx use epicbuilder > /dev/null 2>&1 || docker buildx create --name epicbuilder --use > /dev/null 2>&1
-
+  
 after_script:
   - docker logout $CI_REGISTRY
   - docker logout
@@ -25,6 +24,7 @@ alpine:
     VERSION: "alpine"
   script:
     - echo "Build Docker image for azp-agent with version '${VERSION}'"
+    - docker buildx use epicbuilder > /dev/null 2>&1 || docker buildx create --name epicbuilder --use > /dev/null 2>&1
     - docker buildx build . -f "Dockerfile.${VERSION}"
         --push --pull --no-cache
         --platform linux/amd64,linux/arm64
