@@ -6,11 +6,10 @@ Docker images for Microsoft Azure-DevOps Self-Hosting Agents.
 
 * Base images: 
   - https://hub.docker.com/_/python (python:3-alpine)
-  - https://hub.docker.com/_/ubuntu (ubuntu:22.04 and ubuntu:24.04)
+  - https://hub.docker.com/_/ubuntu (ubuntu:22.04)
 * Dockerfiles: 
   - https://gitlab.com/epicsoft-networks/azp-agent/blob/main/Dockerfile.apline
   - https://gitlab.com/epicsoft-networks/azp-agent/blob/main/Dockerfile.ubuntu22
-  - https://gitlab.com/epicsoft-networks/azp-agent/blob/main/Dockerfile.ubuntu24
 * Repository: https://gitlab.com/epicsoft-networks/azp-agent/tree/main
 * Container-Registry: https://gitlab.com/epicsoft-networks/azp-agent/container_registry
 * Docker Hub: https://hub.docker.com/r/epicsoft/azp-agent
@@ -23,9 +22,8 @@ https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azur
 
 ## Versions
 
-`alpine` based on `python:3-alpine` - build `weekly`
-`ubuntu22.04` based on `ubuntu:22.04` - build `weekly`
-`ubuntu24.04` based on `ubuntu:24.04` - build `weekly`
+`alpine` based on `python:3-alpine` - build `weekly`  
+`ubuntu22.04` based on `ubuntu:22.04` - build `weekly`  
 
 ## Environment variables
 
@@ -39,6 +37,23 @@ Packages installed in addition to the instructions:
 
 ## Examples
 
+```bash
+docker run --name "azp-agent-alpine" \
+  -e AZP_URL="<AZURE DEVOPS INSTANCE>" \
+  -e AZP_TOKEN="<PERSONAL ACCESS TOKEN>" \
+  -e AZP_POOL="<AGENT POOL NAME>" \
+  -e AZP_AGENT_NAME="Docker AZP Agent" \
+  epicsoft/azp-agent:alpine-latest
+```
+
+```bash
+docker run --name "azp-agent-ubuntu" \
+  -e AZP_URL="<AZURE DEVOPS INSTANCE>" \
+  -e AZP_TOKEN="<PERSONAL ACCESS TOKEN>" \
+  -e AZP_POOL="<AGENT POOL NAME>" \
+  -e AZP_AGENT_NAME="Docker AZP Agent" \
+  epicsoft/azp-agent:ubuntu-latest
+```
 
 ## License
 
