@@ -43,7 +43,7 @@ uploadReadme:
       -e DOCKERHUB_USERNAME=${DOCKER_HUB_USER}
       -e DOCKERHUB_PASSWORD=${DOCKER_HUB_TOKEN}
       -e DOCKERHUB_REPOSITORY=${DOCKER_REGISTRY}
-      -e SHORT_DESCRIPTION="Docker image for creating Azure DevOps backup based on official Alpine image"
+      -e SHORT_DESCRIPTION="Docker image for Self-Hosted Azure pipelines agent"
       -e README_FILEPATH='/workspace/README.md'
         peterevans/dockerhub-description:latest
   retry: 2
