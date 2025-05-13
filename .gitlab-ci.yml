@@ -19,7 +19,7 @@ after_script:
   - docker logout $CI_REGISTRY
   - docker logout
 
-alpine:
+Alpine:
   stage: build
   variables:
     VERSION: "alpine"
@@ -32,6 +32,42 @@ alpine:
         -t ${CI_REGISTRY_IMAGE}:${VERSION}-latest
         -t ${DOCKER_REGISTRY}:${VERSION}
         -t ${DOCKER_REGISTRY}:${VERSION}-latest
+        --build-arg IMAGE_TAG=${VERSION}
+        --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+  only: [ "main" ]
+
+Ubuntu22.04:
+  stage: build
+  variables:
+    VERSION: "ubuntu22.04"
+  script:
+    - echo "Build Docker image for azp-agent with version '${VERSION}'"
+    - docker buildx build . -f "Dockerfile.${VERSION}"
+        --push --pull --no-cache
+        --platform linux/amd64,linux/arm64
+        -t ${CI_REGISTRY_IMAGE}:${VERSION}
+        -t ${CI_REGISTRY_IMAGE}:${VERSION}-latest
+        -t ${DOCKER_REGISTRY}:${VERSION}
+        -t ${DOCKER_REGISTRY}:${VERSION}-latest
+        --build-arg IMAGE_TAG=${VERSION}
+        --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+  only: [ "main" ]
+
+Ubuntu24.04:
+  stage: build
+  variables:
+    VERSION: "ubuntu24.04"
+  script:
+    - echo "Build Docker image for azp-agent with version '${VERSION}'"
+    - docker buildx build . -f "Dockerfile.${VERSION}"
+        --push --pull --no-cache
+        --platform linux/amd64,linux/arm64
+        -t ${CI_REGISTRY_IMAGE}:${VERSION}
+        -t ${CI_REGISTRY_IMAGE}:${VERSION}-latest
+        -t ${CI_REGISTRY_IMAGE}:latest
+        -t ${DOCKER_REGISTRY}:${VERSION}
+        -t ${DOCKER_REGISTRY}:${VERSION}-latest
+        -t ${DOCKER_REGISTRY}:latest
         --build-arg IMAGE_TAG=${VERSION}
         --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
   only: [ "main" ]
