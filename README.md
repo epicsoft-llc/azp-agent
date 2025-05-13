@@ -4,12 +4,13 @@ This Docker image is managed and kept up to date by [epicsoft LLC](https://epics
 
 Docker images for Microsoft Azure-DevOps Self-Hosting Agents.
 
+* Instruction: https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops
 * Base images: 
   - https://hub.docker.com/_/python (python:3-alpine)
   - https://hub.docker.com/_/ubuntu (ubuntu:22.04)
 * Dockerfiles: 
-  - https://gitlab.com/epicsoft-networks/azp-agent/blob/main/Dockerfile.apline
-  - https://gitlab.com/epicsoft-networks/azp-agent/blob/main/Dockerfile.ubuntu22
+  - https://gitlab.com/epicsoft-networks/azp-agent/-/blob/main/Dockerfile.alpine
+  - https://gitlab.com/epicsoft-networks/azp-agent/-/blob/main/Dockerfile.ubuntu22.04
 * Repository: https://gitlab.com/epicsoft-networks/azp-agent/tree/main
 * Container-Registry: https://gitlab.com/epicsoft-networks/azp-agent/container_registry
 * Docker Hub: https://hub.docker.com/r/epicsoft/azp-agent
