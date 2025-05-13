@@ -13,7 +13,6 @@ variables:
 before_script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - docker login -u="$DOCKER_HUB_USER" -p="$DOCKER_HUB_TOKEN"
-  - docker buildx use epicbuilder > /dev/null 2>&1 || docker buildx create --name epicbuilder --use > /dev/null 2>&1
 
 after_script:
   - docker logout $CI_REGISTRY
@@ -25,15 +24,15 @@ Alpine:
     VERSION: "alpine"
   script:
     - echo "Build Docker image for azp-agent with version '${VERSION}'"
-    - docker buildx build . -f "Dockerfile.${VERSION}"
+    - docker build . -f "Dockerfile.${VERSION}"
         --push --pull --no-cache
-        --platform linux/amd64,linux/arm64
         -t ${CI_REGISTRY_IMAGE}:${VERSION}
         -t ${CI_REGISTRY_IMAGE}:${VERSION}-latest
         -t ${DOCKER_REGISTRY}:${VERSION}
         -t ${DOCKER_REGISTRY}:${VERSION}-latest
         --build-arg IMAGE_TAG=${VERSION}
         --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+  tags: [ "image" ]
   only: [ "main" ]
 
 Ubuntu22.04:
@@ -42,15 +41,15 @@ Ubuntu22.04:
     VERSION: "ubuntu22.04"
   script:
     - echo "Build Docker image for azp-agent with version '${VERSION}'"
-    - docker buildx build . -f "Dockerfile.${VERSION}"
+    - docker build . -f "Dockerfile.${VERSION}"
         --push --pull --no-cache
-        --platform linux/amd64,linux/arm64
         -t ${CI_REGISTRY_IMAGE}:${VERSION}
         -t ${CI_REGISTRY_IMAGE}:${VERSION}-latest
         -t ${DOCKER_REGISTRY}:${VERSION}
         -t ${DOCKER_REGISTRY}:${VERSION}-latest
         --build-arg IMAGE_TAG=${VERSION}
         --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+  tags: [ "image" ]
   only: [ "main" ]
 
 Ubuntu24.04:
@@ -59,9 +58,8 @@ Ubuntu24.04:
     VERSION: "ubuntu24.04"
   script:
     - echo "Build Docker image for azp-agent with version '${VERSION}'"
-    - docker buildx build . -f "Dockerfile.${VERSION}"
+    - docker build . -f "Dockerfile.${VERSION}"
         --push --pull --no-cache
-        --platform linux/amd64,linux/arm64
         -t ${CI_REGISTRY_IMAGE}:${VERSION}
         -t ${CI_REGISTRY_IMAGE}:${VERSION}-latest
         -t ${CI_REGISTRY_IMAGE}:latest
@@ -70,6 +68,7 @@ Ubuntu24.04:
         -t ${DOCKER_REGISTRY}:latest
         --build-arg IMAGE_TAG=${VERSION}
         --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+  tags: [ "image" ]
   only: [ "main" ]
 
 uploadReadme:
