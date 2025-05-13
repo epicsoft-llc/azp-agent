@@ -32,8 +32,8 @@ alpine:
         -t ${DOCKER_REGISTRY}:${VERSION}
         --build-arg IMAGE_TAG=${VERSION}
         --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-  tags: imagex
-  only: main
+  tags: [ "imagex" ]
+  only: [ "main" ]
 
 uploadReadme:
   stage: release
@@ -47,4 +47,4 @@ uploadReadme:
       -e README_FILEPATH='/workspace/README.md'
         peterevans/dockerhub-description:latest
   retry: 2
-  only: main
+  only: [ "main" ]
