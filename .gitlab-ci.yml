@@ -66,6 +66,6 @@ uploadReadme:
       -e DOCKERHUB_REPOSITORY=${DOCKER_REGISTRY}
       -e SHORT_DESCRIPTION="Docker image for Self-Hosted Azure pipelines agent"
       -e README_FILEPATH='/workspace/README.md'
-        peterevans/dockerhub-description:latest
+        peterevans/dockerhub-description:4
   retry: 2
   only: [ "main" ]
