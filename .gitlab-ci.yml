@@ -63,7 +63,7 @@ after_script:
       for name in ${NAMES}; do
         TAGS="${TAGS} -t ${CI_REGISTRY_IMAGE}:${name} -t ${DOCKER_REGISTRY}:${name}"
       done
-      echo "Build azp-agent ${VARIANT} as${NAMES}"
+      echo "Build azp-agent ${VARIANT} as ${NAMES}"
     - docker context create dind
     - docker buildx create --name epicbuilder --driver docker-container --use dind
     - BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')

@@ -40,7 +40,8 @@ run "set -e
   version=\${version#v}
   echo \"agent \${version} for \${platform}\"
   mkdir /tmp/agent && cd /tmp/agent
-  curl -fsSL https://download.agent.dev.azure.com/agent/\${version}/vsts-agent-\${platform}-\${version}.tar.gz | tar -xz
+  curl -fsSL --retry 3 --retry-all-errors -o agent.tar.gz https://download.agent.dev.azure.com/agent/\${version}/vsts-agent-\${platform}-\${version}.tar.gz
+  tar -xzf agent.tar.gz
   ./bin/Agent.Listener --version" || fail "the Azure Pipelines agent does not run"
 echo "ok: the Azure Pipelines agent runs"
 
