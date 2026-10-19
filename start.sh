@@ -57,7 +57,9 @@ print_header() {
 # Let the agent ignore the token env variables
 export VSO_AGENT_IGNORE="AZP_TOKEN,AZP_TOKEN_FILE"
 
-print_header "1. Determining matching Azure Pipelines agent..."
+TARGETARCH="${TARGETARCH:-$(/azp/platform.sh)}"
+
+print_header "1. Determining matching Azure Pipelines agent for ${TARGETARCH}..."
 
 AZP_AGENT_PACKAGES=$(curl -LsS \
     -u user:$(cat "${AZP_TOKEN_FILE}") \

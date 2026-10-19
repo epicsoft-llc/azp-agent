@@ -1,0 +1,51 @@
+FROM ubuntu:26.04
+
+ARG IMAGE_TAG="local"
+ARG BUILD_DATE="development"
+LABEL org.label-schema.name="Azure Pipelines agent" \
+      org.label-schema.description="Self-hosted Azure Pipelines agent with Azure CLI on Ubuntu and Alpine - amd64, arm64, rebuilt weekly" \
+      org.label-schema.vendor="epicsoft LLC / Alexander Schwarz <info@epicsoft.one>" \
+      org.label-schema.url="https://gitlab.com/epicsoft-networks/azp-agent" \
+      org.label-schema.vcs-url="https://gitlab.com/epicsoft-networks/azp-agent/-/tree/main" \
+      org.label-schema.version=${IMAGE_TAG} \
+      org.label-schema.schema-version="1.0" \
+      org.label-schema.build-date=${BUILD_DATE}
+
+LABEL image.name="epicsoft_azp_agent" \
+      image.description="Self-hosted Azure Pipelines agent with Azure CLI on Ubuntu and Alpine - amd64, arm64, rebuilt weekly" \
+      maintainer="epicsoft LLC" \
+      maintainer.name="Alexander Schwarz <info@epicsoft.one>" \
+      maintainer.copyright="Copyright 2025-2026 epicsoft LLC / Alexander Schwarz" \
+      license="MIT"
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+#### the Azure CLI from Microsoft's apt repository, set up as https://aka.ms/InstallAzureCLIDeb does it
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y --no-install-recommends ca-certificates \
+                                               curl \
+                                               git \
+                                               jq \
+                                               libicu78 \
+ && install -d -m 0755 /etc/apt/keyrings \
+ && curl -fsSL https://packages.microsoft.com/keys/microsoft.asc -o /etc/apt/keyrings/microsoft.asc \
+ && printf 'Types: deb\nURIs: https://packages.microsoft.com/repos/azure-cli/\nSuites: %s\nComponents: main\nArchitectures: %s\nSigned-By: /etc/apt/keyrings/microsoft.asc\n' \
+      "$(. /etc/os-release && echo "${VERSION_CODENAME}")" "$(dpkg --print-architecture)" > /etc/apt/sources.list.d/azure-cli.sources \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends azure-cli \
+ && rm -rf /var/lib/apt/lists/*
+
+#### uid 1000 for the agent, as in the Alpine image - the base image gives it to the user ubuntu
+RUN userdel --remove ubuntu \
+ && useradd --create-home --uid 1000 agent \
+ && mkdir /azp \
+ && chown agent:agent /azp
+
+COPY --chmod=755 start.sh platform.sh /azp/
+
+WORKDIR /azp
+
+USER agent
+
+ENTRYPOINT [ "./start.sh" ]
